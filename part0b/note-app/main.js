@@ -16,5 +16,6 @@ xhttp.onreadystatechange = function() {
         document.getElementById('notes').appendChild(ul);
     }
 };
-xhttp.open('GET', '/data.json', true);
+
+xhttp.open('GET', '/notes', true);
 xhttp.send();
