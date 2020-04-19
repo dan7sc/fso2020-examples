@@ -1,5 +1,5 @@
-const xhttp =new XMLHttpRequest();
-xhttp.onreadystate = () => {
+const xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
     if (xhttp.readyState === 4 && xhttp.status === 200) {
         const data = JSON.parse(xhttp.response);
         console.log(data);
