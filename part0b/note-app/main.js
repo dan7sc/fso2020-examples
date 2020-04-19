@@ -5,7 +5,7 @@ xhttp.onreadystatechange = function() {
         console.log(data);
 
         const ul =document.createElement('ul');
-        us.setAttribute('class', 'notes');
+        ul.setAttribute('class', 'notes');
 
         data.forEach(note => {
             const li = document.createElement('li');
