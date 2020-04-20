@@ -17,5 +17,5 @@ xhttp.onreadystatechange = function() {
     }
 };
 
-xhttp.open('GET', '/notes', true);
+xhttp.open('GET', '/data.json', true);
 xhttp.send();

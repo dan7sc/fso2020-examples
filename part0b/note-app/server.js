@@ -16,19 +16,19 @@ const mimeTypes = {
 const files = {
     html: {
         name: 'index.html',
-        url: '/'
+        url: '/notes'
     },
     css: {
         name: 'main.css',
-        url: '/style'
+        url: '/main.css'
     },
     js: {
         name: 'main.js',
-        url: '/script'
+        url: '/main.js'
     },
     json: {
         name: 'data.json',
-        url: '/notes'
+        url: '/data.json'
     }
 };
 
@@ -69,7 +69,7 @@ const server = http.createServer((req, res) => {
             fs.writeFileSync(path.join(__dirname, files.json.name), dataToSend, 'utf-8', () => {});
         });
         res.writeHead(302, {
-            'Location': '/'
+            'Location': '/notes'
         });
     }
     res.end();
