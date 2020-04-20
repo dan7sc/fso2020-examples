@@ -13,7 +13,7 @@ const mimeTypes = {
     json: 'application/json'
 };
 
-const files = {
+const noteFiles = {
     html: {
         name: 'notes.html',
         url: '/notes'
@@ -47,14 +47,14 @@ const sendFileContentToClient = (response, file) => {
 
 const server = http.createServer((req, res) => {
     if (req.method === 'GET') {
-        for (let key in files) {
-            if (req.url === files[key].url)
-                sendFileContentToClient(res, files[key].name);
+        for (let key in noteFiles) {
+            if (req.url === noteFiles[key].url)
+                sendFileContentToClient(res, noteFiles[key].name);
         }
     }
     if (req.method === 'POST') {
         let dataToSend;
-        const dataRaw = readFileContent(files.json.name);
+        const dataRaw = readFileContent(noteFiles.json.name);
         const dataObj = JSON.parse(dataRaw);
         req.on('data', data => {
             const payload = querystring.parse(data.toString());
@@ -66,7 +66,7 @@ const server = http.createServer((req, res) => {
             };
             dataObj.push(newNote);
             dataToSend = JSON.stringify(dataObj, null, 4);
-            fs.writeFileSync(path.join(__dirname, files.json.name), dataToSend, 'utf-8', () => {});
+            fs.writeFileSync(path.join(__dirname, noteFiles.json.name), dataToSend, 'utf-8', () => {});
         });
         res.writeHead(302, {
             'Location': '/notes'
