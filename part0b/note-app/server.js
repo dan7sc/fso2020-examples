@@ -10,7 +10,19 @@ const mimeTypes = {
     html: 'text/html',
     css: 'text/css',
     js: 'application/javascript',
-    json: 'application/json'
+    json: 'application/json',
+    png: 'image/png'
+};
+
+const indexFiles = {
+    html: {
+        name: 'index.html',
+        url: '/'
+    },
+    png: {
+        name: 'kuva.png',
+        url: '/kuva.png'
+    }
 };
 
 const noteFiles = {
@@ -45,7 +57,33 @@ const sendFileContentToClient = (response, file) => {
     response.end(fileContent);
 };
 
+const replaceExpressionInContent = (content, newExpression) => {
+    const initialIndex = content.indexOf('{{');
+    const finalIndex = content.indexOf('}}') + 2;
+    const contentOne = content.slice(0, initialIndex);
+    const contentTwo = content.slice(finalIndex);
+    const newContent = contentOne + newExpression + contentTwo;
+    return newContent;
+};
+
+const getNumberOfNotes = (file) => {
+    return JSON.parse(readFileContent(noteFiles.json.name).toString()).length;
+};
+
 const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/') {
+        const template = path.join(__dirname, '/index-template.html');
+        const indexHtml = path.join(__dirname, indexFiles.html.name);
+        const numberOfNotes = getNumberOfNotes(noteFiles.json.name);
+        const contentStr = readFileContent('index-template.html').toString();
+        const newContent = replaceExpressionInContent(contentStr, numberOfNotes);
+        fs.copyFileSync(template, indexHtml);
+        fs.writeFileSync(indexHtml, newContent);
+        sendFileContentToClient(res, indexFiles.html.name);
+    }
+    if (req.method === 'GET' && req.url === '/kuva.png') {
+        sendFileContentToClient(res, indexFiles.png.name);
+    }
     if (req.method === 'GET') {
         for (let key in noteFiles) {
             if (req.url === noteFiles[key].url)
