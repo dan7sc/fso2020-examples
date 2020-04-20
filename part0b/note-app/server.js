@@ -15,7 +15,7 @@ const mimeTypes = {
 
 const files = {
     html: {
-        name: 'index.html',
+        name: 'notes.html',
         url: '/notes'
     },
     css: {
