@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Note from './components/Note'
+import App from './App'
 
 const notes = [
     {
@@ -22,20 +22,6 @@ const notes = [
         important: true
     }
 ]
-
-const App = ({ notes }) => {
-
-    return (
-        <div>
-          <h1>Notes</h1>
-          <ul>
-            {notes.map(note => {
-                return <Note key={note.id} note={note} />
-            })}
-          </ul>
-        </div>
-    )
-}
 
 ReactDOM.render(
     <App notes={notes} />,
