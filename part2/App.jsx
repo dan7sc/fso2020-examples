@@ -7,6 +7,19 @@ const get = async (url) => {
     return json
 }
 
+const post = async (url, data) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    }
+    const response = await fetch(url, options)
+    const json = await response.json()
+    return json
+}
+
 const App = () => {
     const [notes, setNotes] = useState([])
     const [newNote, setNewNote] = useState('')
@@ -25,9 +38,12 @@ const App = () => {
         const noteObject = {
             content: newNote,
             date: new Date().toISOString(),
-            important: Math.random() < 0.5,
-            id: notes.length + 1
+            important: Math.random() < 0.5
         }
+        post('http://localhost:3001/notes', noteObject).then(response => {
+            setNotes(notes.concat(response))
+            setNewNote('')
+        })
         setNotes(notes.concat(noteObject))
         setNewNote('')
     }
