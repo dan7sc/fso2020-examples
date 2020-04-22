@@ -20,6 +20,19 @@ const post = async (url, data) => {
     return json
 }
 
+const put = async (url, data) => {
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    }
+    const response = await fetch(url, options)
+    const json = await response.json()
+    return json
+}
+
 const App = () => {
     const [notes, setNotes] = useState([])
     const [newNote, setNewNote] = useState('')
@@ -56,6 +69,15 @@ const App = () => {
           ? notes
           : notes.filter(note => note.important)
 
+    const toggleImportanceOf = (id) => {
+        const url = `http://localhost:3001/notes/${id}`
+        const note = notes.find(n => n.id === id)
+        const changedNote = {...note, important: !note.important}
+        put(url, changedNote).then(response => {
+            setNotes(notes.map(note => note.id !== id ? note : response))
+        })
+    }
+
     return (
         <div>
           <h1>Notes</h1>
@@ -65,8 +87,12 @@ const App = () => {
             </button>
           </div>
           <ul>
-            {notesToShow.map(note => {
-                return <Note key={note.id} note={note} />
+            {notesToShow.map((note, i) => {
+                return <Note
+                         key={i}
+                         note={note}
+                         toggleImportance={() => toggleImportanceOf(note.id)}
+                       />
             })}
           </ul>
           <form onSubmit={addNote}>
