@@ -1,37 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
-
-const get = async (url) => {
-    const response = await fetch(url)
-    const json = await response.json()
-    return json
-}
-
-const post = async (url, data) => {
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    }
-    const response = await fetch(url, options)
-    const json = await response.json()
-    return json
-}
-
-const put = async (url, data) => {
-    const options = {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    }
-    const response = await fetch(url, options)
-    const json = await response.json()
-    return json
-}
+import noteService from './services/note'
 
 const App = () => {
     const [notes, setNotes] = useState([])
@@ -39,12 +8,23 @@ const App = () => {
     const [showAll, setShowAll] = useState(true)
 
     useEffect(() => {
-        console.log('effect')
-        get('http://localhost:3001/notes').then(response => {
-            setNotes(response)
-        })
+        noteService
+            .getAll()
+            .then(initialNotes => {
+                setNotes(initialNotes)
+            })
     }, [])
-    console.log('render', notes.length, 'notes')
+
+    const toggleImportanceOf = (id) => {
+        const note = notes.find(n => n.id === id)
+        const changedNote = {...note, important: !note.important}
+
+        noteService
+            .update(id, changedNote)
+            .then(returnedNote => {
+                setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+            })
+    }
 
     const addNote = (event) => {
         event.preventDefault()
@@ -53,10 +33,13 @@ const App = () => {
             date: new Date().toISOString(),
             important: Math.random() < 0.5
         }
-        post('http://localhost:3001/notes', noteObject).then(response => {
-            setNotes(notes.concat(response))
-            setNewNote('')
-        })
+
+        noteService
+            .create(noteObject)
+            .then(returnedNote => {
+                setNotes(notes.concat(returnedNote))
+                setNewNote('')
+            })
         setNotes(notes.concat(noteObject))
         setNewNote('')
     }
@@ -68,15 +51,6 @@ const App = () => {
     const notesToShow = showAll
           ? notes
           : notes.filter(note => note.important)
-
-    const toggleImportanceOf = (id) => {
-        const url = `http://localhost:3001/notes/${id}`
-        const note = notes.find(n => n.id === id)
-        const changedNote = {...note, important: !note.important}
-        put(url, changedNote).then(response => {
-            setNotes(notes.map(note => note.id !== id ? note : response))
-        })
-    }
 
     return (
         <div>
