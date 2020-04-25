@@ -1,5 +1,5 @@
 const express = require('express')
-const notes = require('./db.json')
+let notes = require('./db.json')
 
 const app = express()
 
@@ -14,6 +14,12 @@ app.get('/api/notes/:id', (req, res) => {
     const note = notes.find(note => note.id === id)
     if (note) return res.json(note)
     res.status(404).end()
+})
+
+app.delete('/api/notes/:id', (req, res) => {
+    const id = Number.parseInt(req.params.id)
+    notes = notes.filter(note => note.id !== id)
+    res.status(204).end()
 })
 
 app.listen(PORT, () => {
