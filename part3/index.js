@@ -1,10 +1,14 @@
 const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
 let notes = require('./db.json')
 
 const PORT = 3001
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
+app.use(cors())
 
 app.get('/api/notes', (req, res) => {
     res.json(notes)
@@ -30,6 +34,12 @@ app.post('/api/notes', (req, res) => {
     }
     notes = notes.concat(newNote)
     res.json(newNote)
+})
+
+app.put('/api/notes/:id', (req, res) => {
+    const returnedNote = req.body
+    notes = notes.map(note => note.id !== returnedNote.id ? note : returnedNote)
+    res.json(returnedNote)
 })
 
 app.delete('/api/notes/:id', (req, res) => {

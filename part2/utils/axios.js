@@ -29,7 +29,7 @@ const put = async (url, data) => {
     const options = {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
         },
         body: JSON.stringify(data)
     }
