@@ -1,37 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
+const Note = require('./models/note')
 
-const password = process.argv[2]
-
-const url =
-      `mongodb+srv://fshelyui:${password}@cluster0-rvapt.mongodb.net/note-app?retryWrites=true&w=majority`
-
-const dbOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}
-
-mongoose.connect(url, dbOptions)
-
-const noteSchema = new mongoose.Schema({
-    content: String,
-    date: Date,
-    important: Boolean
-})
-
-noteSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id =returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
-})
-
-const Note = mongoose.model('Note', noteSchema)
-
-const PORT = 3001
+const PORT = process.env.PORT
 const app = express()
 
 app.use(express.json())
