@@ -11,23 +11,29 @@ app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
 
+const errorHandler = (error, req, res, next) => {
+    console.log(error.message)
+    if (error.name === 'CastError') {
+        return res.status(400).send({error: 'malformatted id'})
+    }
+    next(error)
+}
+app.use(errorHandler)
+
 app.get('/api/notes', (req, res) => {
     Note.find({}).then(notes => {
         res.json(notes.map(note => note.toJSON()))
     })
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
     const id = req.params.id
     Note.findById(id)
         .then(note => {
             if (note) res.json(note.toJSON())
-            else res.json(404).end()
+            else res.status(404).end()
         })
-        .catch(error => {
-            console.log(error)
-            res.status(400).send({error: 'malformatted id'})
-        })
+        .catch(error => next(error))
 })
 
 app.post('/api/notes', (req, res) => {
