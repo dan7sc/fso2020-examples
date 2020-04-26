@@ -51,15 +51,23 @@ app.post('/api/notes', (req, res) => {
     })
 })
 
-// app.put('/api/notes/:id', (req, res) => {
-//     const returnedNote = req.body
-//     notes = notes.map(note => note.id !== returnedNote.id ? note : returnedNote)
-//     res.json(returnedNote)
-// })
+app.put('/api/notes/:id', (req, res) => {
+    const body = req.body
+    const id = req.params.id
+    const note = {
+        content: body.content,
+        important: body.important
+    }
+    Note.findByIdAndUpdate(id, note, {new: true})
+        .then(updatedNote => {
+            res.json(updatedNote.toJSON())
+        })
+        .catch(error => next(error))
+})
 
 app.delete('/api/notes/:id', (req, res) => {
     const id = req.params.id
-    Note.findIdAndRemove(id)
+    Note.findByIdAndRemove(id)
         .then(result => {
             res.status(204).end()
         })
