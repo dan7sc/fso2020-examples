@@ -57,11 +57,14 @@ app.post('/api/notes', (req, res) => {
 //     res.json(returnedNote)
 // })
 
-// app.delete('/api/notes/:id', (req, res) => {
-//     const id = Number.parseInt(req.params.id)
-//     notes = notes.filter(note => note.id !== id)
-//     res.status(204).end()
-// })
+app.delete('/api/notes/:id', (req, res) => {
+    const id = req.params.id
+    Note.findIdAndRemove(id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
+})
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
