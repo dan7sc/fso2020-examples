@@ -11,15 +11,6 @@ app.use(express.json())
 app.use(morgan('tiny'))
 app.use(cors())
 
-const errorHandler = (error, req, res, next) => {
-    console.log(error.message)
-    if (error.name === 'CastError') {
-        return res.status(400).send({error: 'malformatted id'})
-    }
-    next(error)
-}
-app.use(errorHandler)
-
 app.get('/api/notes', (req, res) => {
     Note.find({}).then(notes => {
         res.json(notes.map(note => note.toJSON()))
@@ -51,7 +42,7 @@ app.post('/api/notes', (req, res) => {
     })
 })
 
-app.put('/api/notes/:id', (req, res) => {
+app.put('/api/notes/:id', (req, res, next) => {
     const body = req.body
     const id = req.params.id
     const note = {
@@ -65,7 +56,7 @@ app.put('/api/notes/:id', (req, res) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res, next) => {
     const id = req.params.id
     Note.findByIdAndRemove(id)
         .then(result => {
@@ -73,6 +64,15 @@ app.delete('/api/notes/:id', (req, res) => {
         })
         .catch(error => next(error))
 })
+
+const errorHandler = (error, req, res, next) => {
+    console.log(error.message)
+    if (error.name === 'CastError') {
+        return res.status(400).send({error: 'malformatted id'})
+    }
+    next(error)
+}
+app.use(errorHandler)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
