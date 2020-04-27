@@ -12,9 +12,11 @@ app.use(morgan('tiny'))
 app.use(cors())
 
 app.get('/api/notes', (req, res) => {
-    Note.find({}).then(notes => {
-        res.json(notes.map(note => note.toJSON()))
-    })
+    Note.find({})
+        .then(notes => {
+            res.json(notes.map(note => note.toJSON()))
+        })
+        .catch(error => next(error))
 })
 
 app.get('/api/notes/:id', (req, res, next) => {
@@ -27,7 +29,7 @@ app.get('/api/notes/:id', (req, res, next) => {
         .catch(error => next(error))
 })
 
-app.post('/api/notes', (req, res) => {
+app.post('/api/notes', (req, res, next) => {
     const body = req.body
     if (body.content === undefined) {
         return res.status(400).json({error: 'content missing'})
@@ -37,9 +39,12 @@ app.post('/api/notes', (req, res) => {
         important: body.important || false,
         date: new Date()
     })
-    note.save().then(savedNote => {
-        res.json(savedNote.toJSON())
-    })
+    note.save()
+        .then(savedNote => savedNote.toJSON())
+        .then(savedAndFormattedNote => {
+            res.json(savedAndFormattedNote)
+        })
+        .catch(error => next(error))
 })
 
 app.put('/api/notes/:id', (req, res, next) => {
@@ -69,6 +74,8 @@ const errorHandler = (error, req, res, next) => {
     console.log(error.message)
     if (error.name === 'CastError') {
         return res.status(400).send({error: 'malformatted id'})
+    } else if (error.name === 'ValidationError') {
+        return res.status(400).send({error: error.message})
     }
     next(error)
 }
