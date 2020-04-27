@@ -1,27 +1,10 @@
 const mongoose = require('mongoose')
 
-mongoose.set('useFindAndModify', false)
-
-const url = process.env.MONGODB_URI
-
-const dbOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}
-
-mongoose.connect(url, dbOptions)
-  .then(() => {
-    console.log('connected to MongoDB')
-  })
-  .catch(error => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
-
 const noteSchema = new mongoose.Schema({
   content: {
     type: String,
-    minlength: 5,
-    required: true
+    required: true,
+    minlength: 5
   },
   date: {
     type: Date,

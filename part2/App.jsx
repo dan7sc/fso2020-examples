@@ -16,6 +16,10 @@ const App = () => {
             .then(initialNotes => {
                 setNotes(initialNotes)
             })
+            .catch(e => {
+                const error = e.response.data.error
+                setErrorMessage(error)
+            })
     }, [])
 
     const toggleImportanceOf = (id) => {
@@ -28,7 +32,7 @@ const App = () => {
                 setNotes(notes.map(note => note.id !== id ? note : returnedNote))
             })
             .catch(error => {
-		console.error(error)
+                console.error(error)
                 setErrorMessage(
                     `Note '${note.content}' was already removed from server`
                 )
@@ -53,7 +57,9 @@ const App = () => {
                 setNotes(notes.concat(returnedNote))
                 setNewNote('')
             })
-        setNotes(notes.concat(noteObject))
+            .catch(error => {
+                setErrorMessage(error.toString())
+            })
         setNewNote('')
     }
 
