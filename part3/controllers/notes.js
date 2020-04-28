@@ -6,55 +6,39 @@ notesRouter.get('/', async (req, res) => {
   res.json(notes.map(note => note.toJSON()))
 })
 
-notesRouter.get('/:id', (req, res, next) => {
+notesRouter.get('/:id', async (req, res) => {
   const id = req.params.id
-  Note.findById(id)
-    .then(note => {
-      if (note) res.json(note.toJSON())
-      else res.status(404).end()
-    })
-    .catch(error => next(error))
+  const note = await Note.findById(id)
+  if (note) res.json(note.toJSON())
+  else res.status(404).end()
 })
 
-notesRouter.post('/', async (req, res, next) => {
+notesRouter.post('/', async (req, res) => {
   const body = req.body
-  if (body.content === undefined) {
-    return res.status(400).json({ error: 'content missing' })
-  }
   const note = new Note({
     content: body.content,
     important: body.important === undefined ? false : body.important,
     date: new Date()
   })
-  try {
-    const savedNote = await note.save()
-    res.json(savedNote.toJSON())
-  } catch(exception) {
-    next(exception)
-  }
+  const savedNote = await note.save()
+  res.json(savedNote.toJSON())
 })
 
-notesRouter.put('/:id', (req, res, next) => {
+notesRouter.put('/:id', async (req, res) => {
   const body = req.body
   const id = req.params.id
   const note = {
     content: body.content,
     important: body.important
   }
-  Note.findByIdAndUpdate(id, note, { new: true })
-    .then(updatedNote => {
-      res.json(updatedNote.toJSON())
-    })
-    .catch(error => next(error))
+  const updatedNote = await Note.findByIdAndUpdate(id, note, { new: true })
+  res.json(updatedNote.toJSON())
 })
 
-notesRouter.delete('/:id', (req, res, next) => {
+notesRouter.delete('/:id', async (req, res) => {
   const id = req.params.id
-  Note.findByIdAndRemove(id)
-    .then(() => {
-      res.status(204).end()
-    })
-    .catch(error => next(error))
+  await Note.findByIdAndRemove(id)
+  res.status(204).end()
 })
 
 module.exports = notesRouter
