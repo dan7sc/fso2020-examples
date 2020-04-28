@@ -16,22 +16,18 @@ notesRouter.get('/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-notesRouter.post('/', (req, res, next) => {
+notesRouter.post('/', async (req, res, next) => {
   const body = req.body
   if (body.content === undefined) {
     return res.status(400).json({ error: 'content missing' })
   }
   const note = new Note({
     content: body.content,
-    important: body.important || false,
+    important: body.important === undefined ? false : body.important,
     date: new Date()
   })
-  note.save()
-    .then(savedNote => savedNote.toJSON())
-    .then(savedAndFormattedNote => {
-      res.json(savedAndFormattedNote)
-    })
-    .catch(error => next(error))
+  const savedNote = await note.save()
+  res.json(savedNote.toJSON())
 })
 
 notesRouter.put('/:id', (req, res, next) => {
