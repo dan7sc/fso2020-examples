@@ -1,12 +1,9 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
 
-notesRouter.get('/', (req, res, next) => {
-  Note.find({})
-    .then(notes => {
-      res.json(notes.map(note => note.toJSON()))
-    })
-    .catch(error => next(error))
+notesRouter.get('/', async (req, res, next) => {
+  const notes = await Note.find({})
+  res.json(notes.map(note => note.toJSON()))
 })
 
 notesRouter.get('/:id', (req, res, next) => {
