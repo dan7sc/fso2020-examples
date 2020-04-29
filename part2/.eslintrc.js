@@ -1,0 +1,57 @@
+module.exports = {
+  'env': {
+    'commonjs': false,
+    'es6': true,
+    'browser': true,
+    'node': false,
+    'jest': true,
+  },
+  'extends': [
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
+  'globals': {
+    'Atomics': 'readonly',
+    'SharedArrayBuffer': 'readonly'
+  },
+  'parserOptions': {
+    'ecmaFeatures': {
+      'jsx': true
+    },
+    'ecmaVersion': 2018,
+    'sourceType': 'module'
+  },
+  'plugins': [
+    'react'
+  ],
+  'rules': {
+    'indent': [
+      'error',
+      2
+    ],
+    'linebreak-style': [
+      'error',
+      'unix'
+    ],
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'error',
+      'never'
+    ],
+    'eqeqeq': 'error',
+    'no-trailing-spaces': 'error',
+    'object-curly-spacing': [
+      'error',
+      'always'
+    ],
+    'arrow-spacing': [
+      'error',
+      { 'before': true, 'after': true }
+    ],
+    'no-console': 0,
+    'react/prop-types': [0]
+  }
+}
