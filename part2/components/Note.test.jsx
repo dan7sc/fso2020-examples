@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
+import { prettyDOM } from '@testing-library/dom'
 import Note from './Note'
 
 test('renders content', () => {
@@ -12,6 +13,10 @@ test('renders content', () => {
   const component = render(
     <Note note={note} />
   )
+  const li = component.container.querySelector('li')
+
+  component.debug()
+  console.log(prettyDOM(li))
 
   expect(component.container).toHaveTextContent(
     'Component testing is done with react-testing-library'
