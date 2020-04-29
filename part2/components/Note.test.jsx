@@ -13,7 +13,7 @@ test('renders content', () => {
   const component = render(
     <Note note={note} />
   )
-  const li = component.container.querySelector('li')
+  // const li = component.container.querySelector('li')
 
   // component.debug()
   // console.log(prettyDOM(li))
