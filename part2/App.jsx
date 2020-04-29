@@ -12,7 +12,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setuser] = useState(null)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     noteService
@@ -114,7 +114,7 @@ const App = () => {
     setNewNote(event.target.value)
   }
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
     try {
@@ -145,11 +145,11 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage}/>
       {user === null ?
-       loginForm() :
-       <div>
-         <p>{user.name} logged in</p>
-         {noteForm()}
-       </div>
+        loginForm() :
+        <div>
+          <p>{user.name} logged in</p>
+          {noteForm()}
+        </div>
       }
       <div>
         <button onClick={() => setShowAll(!showAll)}>
