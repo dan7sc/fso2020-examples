@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Note from './components/Note'
-import noteService from './services/note'
-import loginService from './services/login'
+import LoginForm from './components/loginForm'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
+import noteService from './services/note'
+import loginService from './services/login'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -13,6 +14,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     noteService
@@ -23,6 +25,9 @@ const App = () => {
       .catch(e => {
         const error = e.response.data.error
         setErrorMessage(error)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }, [])
 
@@ -35,38 +40,17 @@ const App = () => {
     }
   }, [])
 
-  const loginForm = () => {
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type='text'
-          value={username}
-          name='Username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type='password'
-          value={password}
-          name='Password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type='submit'>login</button>
-    </form>
-  }
 
   const noteForm = () => {
-    <form onSubmit={addNote}>
-      <input
-        value={newNote}
-        onChange={handleNoteChange}
-      />
-      <button type='submit'>save</button>
-    </form>
+    return (
+      <form onSubmit={addNote}>
+        <input
+          value={newNote}
+          onChange={handleNoteChange}
+        />
+        <button type='submit'>save</button>
+      </form>
+    )
   }
 
   const toggleImportanceOf = (id) => {
@@ -106,6 +90,9 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage(error.toString())
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
     setNewNote('')
   }
@@ -131,9 +118,32 @@ const App = () => {
     } catch(exceṕtion) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
-        setErrorMessage('null')
+        setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}>log in</button>
+        </div>
+        <div style={showWhenVisible}>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+          <button onClick={() => setLoginVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
   }
 
   const notesToShow = showAll
