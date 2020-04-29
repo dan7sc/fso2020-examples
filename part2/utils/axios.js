@@ -11,11 +11,12 @@ const get = async (url) => {
   return json
 }
 
-const post = async (url, data) => {
+const post = async (url, data, token) => {
   const options = {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      'Authorization': token
     },
     body: JSON.stringify(data)
   }
