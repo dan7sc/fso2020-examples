@@ -21,10 +21,11 @@ const NoteForm = ({ createNote }) => {
       <h2>Create a new note</h2>
       <form onSubmit={addNote}>
         <input
+          id='new-note'
           value={newNote}
           onChange={handleChange}
         />
-        <button type='submit'>save</button>
+        <button id='save-button' type='submit'>save</button>
       </form>
     </div>
   )
