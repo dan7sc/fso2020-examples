@@ -24,7 +24,8 @@
     "logs:prod": "heroku logs --tail",
     "eslint": "eslint .",
     "test:ui": "CI=true npm test",
-    "cypress:open": "npx cypress open --browser /usr/bin/chromium-browser"
+    "cypress:open": "npx cypress open --browser /usr/bin/chromium-browser",
+    "cypress:test": "npx cypress open --browser /mnt/fedora28/usr/bin/chromium-browser"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
