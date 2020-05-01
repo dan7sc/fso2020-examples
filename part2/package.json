@@ -17,7 +17,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cp:ui": "cp -r ./src ../../fullstackopen2020/examples/part2/",
-    "rsync:ui": "rsync -a --exclude=node_modules --exclude='*.git*' ./ ../../fullstackopen2020/examples/part2/",
+    "rsync:ui": "rsync -a --exclude=node_modules --exclude='*.git' --exclude='cypress/videos' ./ ../../fullstackopen2020/examples/part2/",
     "build:ui": "rm -rf build && npm run build --prod && cp -r build ../../fullstackopen2020/examples/part3/",
     "deploy": "git push heroku master",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
@@ -25,7 +25,7 @@
     "eslint": "eslint .",
     "test:ui": "CI=true npm test",
     "cypress:open": "npx cypress open --browser /usr/bin/chromium-browser",
-    "cypress:test": "npx cypress open --browser /mnt/fedora28/usr/bin/chromium-browser"
+    "test:e2e": "npx cypress run"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {

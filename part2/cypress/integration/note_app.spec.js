@@ -39,6 +39,10 @@ describe('Note app', function() {
   })
 
   describe('when logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'mluukkai', password: 'salainen' })
+    })
+
     describe('and several notes exist', function() {
       beforeEach(function() {
         cy.createNote({ content: 'first note', important: false }),
@@ -46,15 +50,11 @@ describe('Note app', function() {
         cy.createNote({ content: 'third note', important: false })
       })
 
-      it.only('one of those can be made important', function() {
+      it('one of those can be made important', function() {
         cy.contains('second note').parent().find('button').as('theButton')
         cy.get('@theButton').click()
         cy.get('@theButton').should('contain', 'make not important')
       })
-    })
-
-    beforeEach(function() {
-      cy.login({ username: 'mluukkai', password: 'salainen' })
     })
 
     it('a new note can be created', function() {
@@ -66,19 +66,13 @@ describe('Note app', function() {
 
     describe('and a note exists', function() {
       beforeEach(function() {
-        cy.createNote({
-          content: 'another note cypress',
-          important: false
-        })
+        cy.createNote({ content: 'another note cypress', important: false })
       })
 
       it('it can be made important', function() {
-        cy.contains('another note cypress')
-          .contains('important')
-          .click()
-
-        cy.contains('another note cypress')
-          .contains('make not important')
+        cy.contains('another note cypress').parent().find('button').as('theButton')
+        cy.get('@theButton').click()
+        cy.get('@theButton').should('contain', 'make not important')
       })
     })
   })

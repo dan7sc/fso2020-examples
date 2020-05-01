@@ -1,3 +1,4 @@
 {
-  "port": 41923
+  "port": 41923,
+  "videoCompression": false
 }
