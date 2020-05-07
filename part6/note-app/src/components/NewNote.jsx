@@ -9,7 +9,6 @@ const NewNote = () => {
     event.preventDefault()
     const content = event.target.note.value
     event.target.note.value = ''
-
     dispatch(createNote(content))
   }
 
