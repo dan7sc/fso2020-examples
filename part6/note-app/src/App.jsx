@@ -4,18 +4,13 @@ import NewNote from './components/NewNote'
 import Notes from './components/Note'
 import VisibilityFilter from './components/VisibilityFilter'
 import { initializeNotes } from './reducers/noteReducer'
-import noteService from './services/notes'
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const localGetAll = async () => {
-      const notes = await noteService.getAll()
-      dispatch(initializeNotes(notes))
-    }
-    localGetAll()
-  }, [])
+    dispatch(initializeNotes())
+  }, [dispatch])
 
   return (
     <div>
