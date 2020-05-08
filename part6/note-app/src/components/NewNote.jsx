@@ -18,9 +18,19 @@ const NewNote = (props) => {
   )
 }
 
+// alternative way of using mapDispatchToProps
+const mapDispatchToProps = dispatch => {
+  return {
+    createNote: value => {
+      dispatch(createNote(value))
+    }
+  }
+}
+
 const connectedNewNote = connect(
   null,
-  { createNote }
+  mapDispatchToProps
+  // { createNote }
 )(NewNote)
 
 export default connectedNewNote
