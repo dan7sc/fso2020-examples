@@ -22,10 +22,6 @@ const noteReducer = (state = [], action) => {
   }
 }
 
-const generateId = () => {
-  return Number(Math.random() * 1000000).toFixed(0)
-}
-
 export const initializeNotes = (notes) => {
   return {
     type: 'INIT_NOTES',
@@ -33,14 +29,10 @@ export const initializeNotes = (notes) => {
   }
 }
 
-export const createNote = (content) => {
+export const createNote = (data) => {
   return {
     type: 'NEW_NOTE',
-    data: {
-      content,
-      important: false,
-      id: generateId()
-    }
+    data
   }
 }
 
