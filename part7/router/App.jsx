@@ -1,4 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -25,45 +30,34 @@ const Users = () => {
 }
 
 const App = () => {
-  const [page, setPage] = useState('home')
-
-  const toPage = (page) => (event) => {
-    event.preventDefault()
-    setPage(page)
-  }
-
-  const content = () => {
-    if (page === 'home')
-      return <Home />
-    else if (page === 'notes')
-      return <Notes />
-    else if (page === 'users')
-      return <Users />
-  }
-
   const padding = {
     padding: 5
   }
 
   return (
-    <div>
+    <Router>
       <div>
-        {/* eslint-disable-next-line */}
-        <a href='#' onClick={toPage('home')} style={padding}>
-          home
-        </a>
-        {/* eslint-disable-next-line */}
-        <a href='#' onClick={toPage('notes')} style={padding}>
-          notes
-        </a>
-        {/* eslint-disable-next-line */}
-        <a href='#' onClick={toPage('users')} style={padding}>
-          users
-        </a>
+        <Link style={padding} to='/'>home</Link>
+        <Link style={padding} to='/notes'>notes</Link>
+        <Link style={padding} to='/users'>users</Link>
       </div>
 
-      {content()}
-    </div>
+      <Switch>
+        <Route path='/notes'>
+          <Notes />
+        </Route>
+        <Route path='/users'>
+          <Users />
+        </Route>
+        <Route path='/'>
+          <Home />
+        </Route>
+      </Switch>
+
+      <div>
+        <i>Note app, Department of Computer Science 2020</i>
+      </div>
+    </Router>
   )
 }
 
