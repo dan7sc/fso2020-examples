@@ -7,7 +7,7 @@ import {
   useRouteMatch,
   useHistory
 } from 'react-router-dom'
-import { Table, Form, Button, Alert } from 'react-bootstrap'
+import { Table, Form, Button, Alert, Navbar, Nav } from 'react-bootstrap'
 
 const HOME_TEXT = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.'
 
@@ -141,15 +141,28 @@ const App = () => {
           {message}
         </Alert>
       )}
-      <div>
-        <Link style={padding} to='/'>home</Link>
-        <Link style={padding} to='/notes'>notes</Link>
-        <Link style={padding} to='/users'>users</Link>
-        {user
-          ? <em>{user} logged in</em>
-          : <Link style={padding} to='/login'>login</Link>
-        }
-      </div>
+      <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
+        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Collapse id='reponsive-navbar-nav'>
+          <Nav className='mr-auto'>
+            <Nav.Link href='#' as='span'>
+              <Link style={padding} to='/'>home</Link>
+            </Nav.Link>
+            <Nav.Link href='#' as='span'>
+              <Link style={padding} to='/notes'>notes</Link>
+            </Nav.Link>
+            <Nav.Link href='#' as='span'>
+              <Link style={padding} to='/users'>users</Link>
+            </Nav.Link>
+            <Nav.Link href='#' as='span'>
+              {user
+                ? <em>{user} logged in</em>
+                : <Link style={padding} to='/login'>login</Link>
+              }
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
 
       <Switch>
         <Route path='/notes/:id'>
