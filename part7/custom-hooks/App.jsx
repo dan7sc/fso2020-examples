@@ -24,20 +24,19 @@ const useCounter = () => {
 }
 
 const App = () => {
-  const counter = useCounter()
+  const left = useCounter()
+  const right = useCounter()
 
   return (
     <div>
-      <div>{counter.value}</div>
-      <button onClick={counter.decrease}>
-        minus
+      {left.value}
+      <button onClick={left.increase}>
+        left
       </button>
-      <button onClick={counter.zero}>
-        zero
+      <button onClick={right.increase}>
+        right
       </button>
-      <button onClick={counter.increase}>
-        plus
-      </button>
+      {right.value}
     </div>
   )
 }
