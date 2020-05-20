@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const { v1: uuid } = require('uuid')
 
 let persons = [
   {
@@ -24,11 +25,15 @@ let persons = [
 ]
 
 const typeDefs = gql`
+type Address {
+  street: String!
+  city: String!
+}
+
 type Person {
   name: String!
   phone: String
-  street: String!
-  city: String!
+  address: Address!
   id: ID!
 }
 
@@ -37,7 +42,7 @@ type Query {
   allPersons: [Person!]!
   findPerson(name: String!): Person
 }
-`
+`;
 
 const resolvers = {
   Query: {
@@ -46,6 +51,14 @@ const resolvers = {
     findPerson: (root, args) => (
       persons.find(p => p.name === args.name)
     )
+  },
+  Person: {
+    address: (root) => {
+      return {
+        street: root.street,
+        city: root.city
+      }
+    }
   }
 }
 
