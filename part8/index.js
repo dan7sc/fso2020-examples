@@ -37,6 +37,15 @@ type Person {
   id: ID!
 }
 
+type Mutation {
+  addPerson(
+    name: String!
+    phone: String
+    street: String!
+    city: String!
+  ): Person
+}
+
 type Query {
   personCount: Int!
   allPersons: [Person!]!
@@ -58,6 +67,13 @@ const resolvers = {
         street: root.street,
         city: root.city
       }
+    }
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const person = { ...args, id: uuid() }
+      persons = persons.concat(person)
+      return person
     }
   }
 }
