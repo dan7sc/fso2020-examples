@@ -11,7 +11,16 @@ const PhoneForm = ({ notify }) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    changeNumber({ variables: { name, phone } })
+    changeNumber({
+      variables: {
+        name,
+        phone
+      }
+    })
+
+    if (phone.length < 5) {
+      notify('phone number is less than 5 characters')
+    }
 
     setName('')
     setPhone('')
