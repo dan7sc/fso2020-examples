@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { gql, useLazyQuery } from '@apollo/client'
-
-const FIND_PERSON = gql`
-  query findPersonByName($nameToSearch: String!) {
-    findPerson(name: $nameToSearch) {
-      name
-      phone
-      id
-      address {
-        street
-        city
-      }
-    }
-  }
-`
+import { useLazyQuery } from '@apollo/client'
+import { FIND_PERSON } from '../queries'
 
 const Persons = ({ persons }) => {
   const [getPerson, result] = useLazyQuery(FIND_PERSON)
@@ -27,7 +14,7 @@ const Persons = ({ persons }) => {
     if (result.data) {
       setPerson(result.data.findPerson)
     }
-  }, [result])
+  }, [result.data])
 
   if (person) {
     return (
@@ -46,7 +33,9 @@ const Persons = ({ persons }) => {
       {persons.map(p => (
           <div key={p.name}>
             {p.name} {p.phone}
-            <button onClick={() => showPerson(p.name)}>show address</button>
+            <button onClick={() => showPerson(p.name)}>
+              show address
+            </button>
         </div>
       ))}
     </div>
