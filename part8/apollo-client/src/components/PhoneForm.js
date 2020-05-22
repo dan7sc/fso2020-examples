@@ -8,6 +8,12 @@ const PhoneForm = ({ notify }) => {
 
   const [changeNumber, result] = useMutation(EDIT_NUMBER)
 
+  useEffect(() => {
+    if (result.data && !result.data.editNumber) {
+      notify('person not found')
+    }
+  }, [result.data]) // eslint-disable-line
+
   const submit = async (event) => {
     event.preventDefault()
 
@@ -19,18 +25,12 @@ const PhoneForm = ({ notify }) => {
     })
 
     if (phone.length < 5) {
-      notify('phone number is less than 5 characters')
+      notify('phone number is less than 5 digits')
     }
 
     setName('')
     setPhone('')
   }
-
-  useEffect(() => {
-    if (result.data && result.data.editNumber === null) {
-      notify('person not found')
-    }
-  }, [result.data]) // eslint-disable-line
 
   return (
     <div>
