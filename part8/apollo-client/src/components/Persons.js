@@ -3,12 +3,8 @@ import { useLazyQuery } from '@apollo/client'
 import { FIND_PERSON } from '../queries'
 
 const Persons = ({ persons }) => {
-  const [getPerson, result] = useLazyQuery(FIND_PERSON)
   const [person, setPerson] = useState(null)
-
-  const showPerson = name => {
-    getPerson({ variables: { nameToSearch: name } })
-  }
+  const [getPerson, result] = useLazyQuery(FIND_PERSON)
 
   useEffect(() => {
     if (result.data) {
@@ -16,13 +12,22 @@ const Persons = ({ persons }) => {
     }
   }, [result.data])
 
+  const showPerson = name => {
+    getPerson({ variables: { nameToSearch: name } })
+  }
+
+  const clearPerson = () => {
+    getPerson({ variables: { nameToSearch: '' } })
+    setPerson(null)
+  }
+
   if (person) {
     return (
       <div>
         <h2>{person.name}</h2>
         <div>{person.address.street} {person.address.city}</div>
         <div>{person.phone}</div>
-        <button onClick={() => setPerson(null)}>close</button>
+        <button onClick={() => clearPerson()}>close</button>
       </div>
     )
   }
