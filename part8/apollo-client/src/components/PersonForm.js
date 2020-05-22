@@ -18,7 +18,14 @@ const PersonForm = ({ setError }) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    createPerson({ variables: { name, phone, street, city } })
+    createPerson({
+      variables: {
+        name,
+        street,
+        city,
+        phone: phone.length > 0 ? phone : null
+      }
+    })
 
     setName('')
     setPhone('')
