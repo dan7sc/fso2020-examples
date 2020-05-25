@@ -20,6 +20,10 @@ const personSchema = mongoose.Schema({
     type: String,
     required: true,
     minlength: 3
+  },
+  friendOf: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 
