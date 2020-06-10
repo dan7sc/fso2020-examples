@@ -92,7 +92,7 @@ const App = () => {
     <div>
       <button onClick={logout}>logout</button>
       <Notify errorMessage={errorMessage} />
-      <Persons persons={result.data.allPersons} />
+      <Persons setError={notify} persons={result.data.allPersons} />
       <PersonForm setError={notify} updateCacheWith={updateCacheWith} />
       <PhoneForm notify={notify} />
     </div>
