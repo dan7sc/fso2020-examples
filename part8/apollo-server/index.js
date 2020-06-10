@@ -1,4 +1,6 @@
-const { ApolloServer, UserInputError, AuthenticationError, gql, PubSub } = require('apollo-server')
+const {
+  ApolloServer, UserInputError, AuthenticationError, gql, PubSub
+} = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const config = require('./config')
@@ -100,7 +102,7 @@ const resolvers = {
         .populate('friendOf')
     },
     findPerson: (root, args) => (
-      Person.findOne({ name: args.name })
+      Person.findOne({ name: args.name }).populate('friendOf')
     ),
     me: (root, args, context) => {
       return context.currentUser
@@ -112,15 +114,6 @@ const resolvers = {
         street: root.street,
         city: root.city
       }
-    },
-    friendOf: async (root) => {
-      const friends = await User.find({
-        friends: {
-          $in: [root._id]
-        }
-      })
-
-      return friends
     }
   },
   Mutation: {
@@ -133,6 +126,7 @@ const resolvers = {
       }
 
       try {
+        person.friendOf = person.friendOf.concat(currentUser)
         await person.save()
         currentUser.friends = currentUser.friends.concat(person)
         await currentUser.save()
@@ -195,9 +189,11 @@ const resolvers = {
       const person = await Person.findOne({ name: args.name })
       if (nonFriendAlready(person)) {
         currentUser.friends = currentUser.friends.concat(person)
+        person.friendOf = person.friendOf.concat(currentUser)
       }
 
       await currentUser.save()
+      await person.save()
 
       return currentUser
     }
