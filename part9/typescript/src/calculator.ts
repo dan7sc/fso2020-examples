@@ -1,3 +1,5 @@
+export {};
+
 type Operation = string | 'multiply' | 'add' | 'divide';
 type Result = number;
 
