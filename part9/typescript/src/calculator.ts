@@ -1,4 +1,4 @@
-type Operation = 'multiply' | 'add' | 'divide';
+type Operation = string | 'multiply' | 'add' | 'divide';
 
 type Result = number;
 
@@ -16,26 +16,12 @@ const calculator = (a: number, b: number, op: Operation): Result => {
     }
 }
 
-try {
-    console.log(calculator(1, 5, 'divide'))
-} catch(error) {
-    console.log('Something was wrong, error message:', error.message)
-}
+const a: number = Number(process.argv[2]);
+const b: number = Number(process.argv[3]);
+const op: Operation = process.argv[4];
 
 try {
-    console.log(calculator(2, 5, 'multiply'))
+    console.log(calculator(a, b, op));
 } catch(error) {
-    console.log('Something was wrong, error message:', error.message)
-}
-
-try {
-    console.log(calculator(1, 5, 'add'))
-} catch(error) {
-    console.log('Something was wrong, error message:', error.message)
-}
-
-try {
-    console.log(calculator(1, 0, 'divide'))
-} catch(error) {
-    console.log('Something was wrong, error message:', error.message)
+    console.log('Something was wrong, error message:', error.message);
 }

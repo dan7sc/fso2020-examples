@@ -7,9 +7,13 @@
     "ts-node": "^8.10.1",
     "typescript": "^3.9.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^14.0.13"
+  },
   "scripts": {
     "ts-node": "ts-node",
+    "multiply": "ts-node ./src/multiplier.ts",
+    "calculate": "ts-node ./src/calculator.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
