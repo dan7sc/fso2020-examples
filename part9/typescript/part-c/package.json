@@ -16,11 +16,8 @@
     "typescript": "^3.9.3"
   },
   "scripts": {
-    "ts-node": "ts-node",
-    "multiply": "ts-node ./src/multiplier.ts",
-    "calculate": "ts-node ./src/calculator.ts",
     "start": "node ./build/index.js",
-    "dev": "ts-node-dev index.ts",
+    "dev": "ts-node-dev ./src/index.ts",
     "lint": "eslint --ext .ts .",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
