@@ -1,16 +1,25 @@
 import diaries from '../../data/diaries';
+import { NonSensitiveDiaryEntry, DiaryEntry } from '../types';
 
-import { DiaryEntry } from '../types';
-
-const getEntries = (): Array<DiaryEntry> => {
+const getEntries = (): DiaryEntry[] => {
     return diaries;
 };
 
-const addEntry = () => {
-    return null;
+const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
+    return diaries.map(({ id, date, weather, visibility }) => ({
+        id,
+        date,
+        weather,
+        visibility
+    }));
+};
+
+const addDiary = () => {
+    return [];
 };
 
 export default {
     getEntries,
-    addEntry
+    addDiary,
+    getNonSensitiveEntries
 };

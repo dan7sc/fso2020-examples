@@ -5,7 +5,9 @@ export type Visibility = 'great' | 'good' | 'ok' | 'poor';
 export interface DiaryEntry {
     id: number;
     date: string;
-    weater: Weater;
+    weather: Weather;
     visibility: Visibility;
     comment: string;
 }
+
+export type NonSensitiveDiaryEntry = Omi<DiaryEntry, 'comment'>;
