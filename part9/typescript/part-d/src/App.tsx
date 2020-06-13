@@ -1,8 +1,8 @@
 import React from 'react';
-import Welcome from './components/Welcome';
+import CourseParts, { courseParts } from './components/CourseParts';
 
 const App = () => (
-  <Welcome name="Sara" />
+    <CourseParts courseParts={courseParts} />
 );
 
 export default App;
